@@ -1,0 +1,28 @@
+@import '~antd/es/style/themes/default.less';
+
+.search-filter {
+  .ant-popover-inner-content {
+    padding: 12px 0px 12px 16px;
+  }
+
+  // subsection where all of the column checkboxes are
+  &-options {
+    .ant-checkbox-group {
+      display: flex;
+      flex-direction: column;
+
+      .ant-checkbox-group-item {
+        margin-right: 0;
+        margin-bottom: 8px;
+
+        &:last-of-type {
+          margin-bottom: 0px;
+        }
+
+        &:hover {
+          background-color: #e6f7ff;
+        }
+      }
+    }
+  }
+}

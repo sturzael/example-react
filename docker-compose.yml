@@ -1,0 +1,40 @@
+version: '3.7'
+services:
+  web:
+    image: nginx:latest
+    container_name: v3_admin_area
+    restart: always
+    volumes:
+      - type: bind
+        source: ${APP_ROOT:-./dist}
+        target: /var/www/v3
+        read_only: true
+      - ./docker/nginx/${APP_ENV:-test}/site.conf:/etc/nginx/conf.d/site.conf:cached
+      - v3_web_varlog:/var/log
+    working_dir: /var/www/v3
+    labels:
+      - traefik.http.routers.admin-area.rule=PathPrefix(`/payroll/admin-dashboard`)
+      - traefik.http.routers.admin-area.priority=60
+      - traefik.http.routers.admin-area.entryPoints=https
+      - traefik.http.routers.admin-area.tls=true
+      - traefik.docker.network=dmz
+    networks:
+      default:
+        priority: 100
+      dmz:
+
+networks:
+  default:
+    name: payroll-admin
+    driver: bridge
+    ipam:
+      driver: default
+  dmz:
+    external: true
+  services:
+    external: true
+
+volumes:
+  v3_web_varlog:
+    driver: local
+    name: v3_admin_area_web_varlog
